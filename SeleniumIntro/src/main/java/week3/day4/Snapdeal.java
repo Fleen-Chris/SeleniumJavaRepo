@@ -1,13 +1,17 @@
 package week3.day4;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -17,11 +21,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Snapdeal {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		// TODO Auto-generated method stub
 		
 		ChromeOptions options = new ChromeOptions();
 		
+		// Disabling notifications
 		options.addArguments("--disable-notifications");
 		
 		options.addArguments("--incognito");
@@ -33,7 +38,8 @@ public class Snapdeal {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 		
 		driver.get("https://www.snapdeal.com/");
-		
+	 	
+		// Mouse hovering for elements
 		Actions act = new Actions(driver);
 		
 		act.moveToElement(driver.findElement(By.xpath("//div[@class='leftHead topCats']//following::span[text()=\"Men's Fashion\"]"))).perform();
@@ -55,6 +61,7 @@ public class Snapdeal {
 		
 		Thread.sleep(1000);
 		
+		// checking for selected option in sort
 		String dpOption = driver.findElement(By.xpath("//div[@class='sort-selected']")).getText();
 	
 		if (dpOption.equals("Price Low To High")) 
@@ -88,6 +95,7 @@ public class Snapdeal {
 		
 		Thread.sleep(1000);
 		
+		// Handling windows
 		System.out.println("Title of the window: "+driver.getTitle());
 		
 		Set<String> allOpenedWindows = driver.getWindowHandles();
@@ -99,25 +107,32 @@ public class Snapdeal {
 		for (String windowsName : allOpenedWindows) {
 			System.out.println(windowsName);
 			}
+		System.out.println("------- ------------ -------");
 		
 		driver.switchTo().window(shiftFocusTo.get(1));
 		
 		Thread.sleep(1000);
 		
-		//String discount = driver.findElement(By.xpath("//span[@class='pdpDiscount']/span")).getText();
+		String discount = driver.findElement(By.xpath("(//span[@class='pdpDiscount ']/span)[1]")).getText();
 		
-		//System.out.println(discount);
+		System.out.println("Discounted Percentage is : "+ discount + "%" );
 				
 		driver.findElement(By.xpath("//div[@class='col-xs-6 marR15 btn btn-xl btn-theme-secondary rippleWhite buyLink']")).click();
 		
 		String price = driver.findElement(By.xpath("//div[@class='you-pay']/span")).getText();
 		
-		System.out.println(price);
+		System.out.println("Price of the shoe is :"+price);
 		
-		
+		// Taking screenshot
+		File scr = driver.getScreenshotAs(OutputType.FILE);
+		File target = new File("./SnapDealpage/shoe.png");
+		FileUtils.copyFile(scr, target);
 				
-	
-		
+	    driver.close();
+	    
+	    driver.switchTo().window(shiftFocusTo.get(0));
+	    
+	    driver.close();
 	
 	}
 
