@@ -7,19 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
-public class EditLead {
+public class EditLead extends week4.day3.ProjectSpecMethods{
 
 @Test
 	public void runEditLead() throws InterruptedException {
-		ChromeDriver driver  = new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.get("http://leaftaps.com/opentaps/control/main");
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-		driver.findElement(By.id("username")).sendKeys("Demosalesmanager");
-		driver.findElement(By.id("password")).sendKeys("crmsfa");
-		driver.findElement(By.className("decorativeSubmit")).click();
-		driver.findElement(By.linkText("CRM/SFA")).click();
-		driver.findElement(By.linkText("Leads")).click();
+		
 		driver.findElement(By.linkText("Find Leads")).click();
 		driver.findElement(By.xpath("//span[text()='Phone']")).click();
 		driver.findElement(By.xpath("//input[@name='phoneNumber']")).sendKeys("98127");
@@ -39,7 +31,7 @@ public class EditLead {
 		else {
 			System.out.println("Lead is not editted");
 		}
-		driver.close();
+		//driver.close();
 
 
 	}
